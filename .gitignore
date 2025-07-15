@@ -1,24 +1,52 @@
-# Compiled class file
+# -------- Eclipse 專案設定與工作區 --------
+.classpath
+.project
+.settings/
+.metadata/
+.recommenders/
+
+# -------- Tomcat 部署與快取 --------
+/apache-tomcat-10.1.41/
+wtpwebapps/
+Servers/
+server/
+.work/
+temp/
+logs/
+.buildpath
+
+# -------- Java 編譯產物 --------
 *.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
 *.war
-*.nar
+*.jar
 *.ear
-*.zip
-*.tar.gz
-*.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# -------- 作業系統與 IDE 暫存 --------
+*.log
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# -------- VSCode / IntelliJ / NetBeans --------
+.vscode/
+.idea/
+nbproject/private/
+out/
+target/
+bin/
+build/
+
+# -------- Maven / Gradle（如果未使用可移除） --------
+.mvn/
+target/
+build/
+*.iml
+/Project2/src/main/webapp/META-INF
+
+# -------- Vue / Node --------
+frontend/node_modules/
+frontend/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
