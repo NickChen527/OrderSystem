@@ -1,0 +1,38 @@
+package com.nick.order_system_backend.repository;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.nick.order_system_backend.entity.Order;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+
+public class OrderDAOImpl implements OrderDAO{
+
+	private EntityManager entityManager;
+	
+	@Autowired
+	public OrderDAOImpl(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+	
+	@Override
+	public Order save(Order order) {
+		return entityManager.merge(order);
+	}
+
+	@Override
+	public Order findById(long id) {
+		return entityManager.find(Order.class, id);
+	}
+
+	@Override
+	public List<Order> findAll() {
+		String hql = "SELECT o FROM Order o";
+		TypedQuery<Order> query = entityManager.createQuery(hql, Order.class);
+		return query.getResultList();
+	}
+
+}
