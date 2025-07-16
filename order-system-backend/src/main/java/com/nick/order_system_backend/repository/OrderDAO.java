@@ -6,7 +6,7 @@ import com.nick.order_system_backend.entity.Order;
 
 public interface OrderDAO {
 
-	//確認送出訂單
+	//新增訂單
 	Order save(Order order);
 	//查看單筆訂單
 	Order findById(long id);

@@ -24,10 +24,19 @@ public class OrderItemDAOImpl implements OrderItemDAO{
 	}
 
 	@Override
-	public List<OrderItem> findAll() {
-		String hql = "SELECT o FROM OrderItem o";
+	public List<OrderItem> findByOrderId(long orderId) {
+		String hql = "SELECT o FROM OrderItem o WHERE o.orderId = :orderId";
 		TypedQuery<OrderItem> query = entityManager.createQuery(hql, OrderItem.class);
+		query.setParameter("orderId", orderId);
 		return query.getResultList();
 	}
+
+	@Override
+	public void deleteById(long id) {
+		OrderItem orderItem = entityManager.find(OrderItem.class, id);
+		entityManager.remove(orderItem);
+	}
+
+	
 
 }

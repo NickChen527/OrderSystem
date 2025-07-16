@@ -27,6 +27,13 @@ public class Order {
 	
 	//Constructors
 	public Order() {}
+	
+
+	public Order(Date orderTime, Double totalAmount) {
+		super();
+		this.orderTime = orderTime;
+		this.totalAmount = totalAmount;
+	}
 
 	//Getters、Setters
 	public Long getId() {
