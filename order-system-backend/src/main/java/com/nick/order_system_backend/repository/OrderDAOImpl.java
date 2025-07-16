@@ -3,12 +3,14 @@ package com.nick.order_system_backend.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.nick.order_system_backend.entity.Order;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
+@Repository
 public class OrderDAOImpl implements OrderDAO{
 
 	private EntityManager entityManager;

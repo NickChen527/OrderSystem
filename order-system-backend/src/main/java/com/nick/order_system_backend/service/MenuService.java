@@ -8,6 +8,8 @@ public interface MenuService {
 
 	//顯示所有餐點
 	List<Menu> getMenu();
+	//找單筆餐點
+	Menu findById(long id);
 	//新增餐點、修改餐點
 	Menu saveMenu(Menu menu);
 	//刪除餐點
