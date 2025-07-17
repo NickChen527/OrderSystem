@@ -1,14 +1,19 @@
 package com.nick.order_system_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "OrderItem")
+@Table(name = "order_item")
 public class OrderItem {
 
 	//Fields
@@ -17,11 +22,14 @@ public class OrderItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "order_id")
-	private Long orderId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "order_id")
+	@JsonBackReference
+	private Order order;
 	
-	@Column(name = "menu_id")
-	private Long menuId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "menu_id")
+	private Menu menu;
 	
 	@Column(name = "quantity")
 	private Integer quantity;
@@ -41,20 +49,20 @@ public class OrderItem {
 		this.id = id;
 	}
 
-	public Long getOrderId() {
-		return orderId;
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
-	public Long getMenuId() {
-		return menuId;
+	public Menu getMenu() {
+		return menu;
 	}
 
-	public void setMenuId(Long menuId) {
-		this.menuId = menuId;
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 
 	public Integer getQuantity() {
@@ -75,8 +83,7 @@ public class OrderItem {
 
 	@Override
 	public String toString() {
-		return "OrderItem [id=" + id + ", orderId=" + orderId + ", menuId=" + menuId + ", quantity=" + quantity
-				+ ", itemPrice=" + itemPrice + "]";
+		return "OrderItem [id=" + id + ", quantity=" + quantity + ", itemPrice=" + itemPrice + "]";
 	}
 	
 }

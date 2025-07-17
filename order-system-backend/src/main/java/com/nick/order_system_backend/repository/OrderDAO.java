@@ -6,10 +6,12 @@ import com.nick.order_system_backend.entity.Order;
 
 public interface OrderDAO {
 
-	//新增訂單
-	Order save(Order order);
+	//新增訂單、更新訂單
+	Order saveOrder(Order order);
 	//查看單筆訂單
 	Order findById(long id);
+	//查看單筆訂單+明細
+	Order findByIdWithItems(long id);
 	//查看所有訂單
 	List<Order> findAll();
 }

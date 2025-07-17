@@ -21,11 +21,6 @@ public class OrderDAOImpl implements OrderDAO{
 	}
 	
 	@Override
-	public Order save(Order order) {
-		return entityManager.merge(order);
-	}
-
-	@Override
 	public Order findById(long id) {
 		return entityManager.find(Order.class, id);
 	}
@@ -35,6 +30,19 @@ public class OrderDAOImpl implements OrderDAO{
 		String hql = "SELECT o FROM Order o";
 		TypedQuery<Order> query = entityManager.createQuery(hql, Order.class);
 		return query.getResultList();
+	}
+
+	@Override
+	public Order saveOrder(Order order) {
+		return entityManager.merge(order);
+	}
+
+	@Override
+	public Order findByIdWithItems(long id) {
+		String hql = "SELECT o FROM Order o JOIN FETCH o.orderItems JOIN FETCH o.orderItems.menu WHERE o.id=:data";
+		TypedQuery<Order> query = entityManager.createQuery(hql,Order.class);
+		query.setParameter("data", id);
+		return query.getSingleResult();
 	}
 
 }
