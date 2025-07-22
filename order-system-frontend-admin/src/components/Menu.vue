@@ -1,7 +1,9 @@
 <script setup>
 import { ref,onMounted } from 'vue';
 const menuList = ref([]);
-
+onMounted(function(){
+    
+});
 </script>
 
 <template>
