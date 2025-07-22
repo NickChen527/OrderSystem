@@ -1,8 +1,11 @@
 package com.nick.order_system_backend.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nick.order_system_backend.dto.RequestItemDTO;
 import com.nick.order_system_backend.entity.Menu;
 import com.nick.order_system_backend.entity.Order;
 import com.nick.order_system_backend.entity.OrderItem;
@@ -25,47 +28,28 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public Order order(long orderId, long menuId, int quantity) {
-		Order order = orderDAO.findById(orderId);
-		if(order==null) {
-			Order newOrder = new Order();
-			//找餐點資訊
-			Menu menu = menuDAO.findById(menuId);
-			//找這個餐點多少錢
-			Double menuPrice = menu.getPrice();
-			//算這筆明細的金額
-			Double itemPrice = menuPrice*quantity;
-			//把資料塞到明細裡
+	public Order newOrder(List<RequestItemDTO> dtos) {
+		Double totalAmount = 0.0;
+		//建立訂單
+		Order order = new Order();
+		for(RequestItemDTO dto : dtos) {
+			//透過menuId找到對應餐點
+			Menu menu = menuDAO.findById(dto.getMenuId());
+			//建立並設定OrderItem
 			OrderItem orderItem = new OrderItem();
 			orderItem.setMenu(menu);
-			orderItem.setItemPrice(itemPrice);
-			orderItem.setQuantity(quantity);
-			//把訂單明細加入訂單裡面
-			newOrder.addOrderItem(orderItem);
-			//計算總金額
-			Double totalAmout = newOrder.getTotalAmount()+orderItem.getItemPrice();
-			newOrder.setTotalAmount(totalAmout);
-			orderDAO.saveOrder(newOrder);
-			return orderDAO.findByIdWithItems(newOrder.getId());
-		} else {
-			//找餐點資訊
-			Menu menu = menuDAO.findById(menuId);
-			//找這個餐點多少錢
-			Double menuPrice = menu.getPrice();
-			//算這筆明細的金額
-			Double itemPrice = menuPrice*quantity;
-			//把資料塞到明細裡
-			OrderItem orderItem = new OrderItem();
-			orderItem.setMenu(menu);
-			orderItem.setItemPrice(itemPrice);
-			orderItem.setQuantity(quantity);
-			//把訂單明細加入訂單裡面
+			orderItem.setItemPrice(menu.getPrice());
+			orderItem.setQuantity(dto.getQuantity());
+			//把OrderItem加入訂單中
 			order.addOrderItem(orderItem);
-			//計算總金額
-			Double totalAmount = order.getTotalAmount()+orderItem.getItemPrice();
-			order.setTotalAmount(totalAmount);
-			orderDAO.saveOrder(order);
-			return orderDAO.findByIdWithItems(order.getId());
+			//累加總金額
+			totalAmount += ( orderItem.getItemPrice()*orderItem.getQuantity() );
 		}
+		//設定訂單的total amount
+		order.setTotalAmount(totalAmount);
+		//更新訂單狀態
+		Order result = orderDAO.saveOrder(order);
+		//回傳訂單明細
+		return orderDAO.findByIdWithItems(result.getId());
 	}
 }

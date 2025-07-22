@@ -1,20 +1,10 @@
 package com.nick.order_system_backend.dto;
 
-public class OrderItemRequestDTO {
+public class RequestItemDTO {
 
-	private Long orderId;
 	private Long menuId;
 	private Integer quantity;
 	
-	public OrderItemRequestDTO() {}
-	
-	public Long getOrderId() {
-		return orderId;
-	}
-
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
-	}
 	public Long getMenuId() {
 		return menuId;
 	}
