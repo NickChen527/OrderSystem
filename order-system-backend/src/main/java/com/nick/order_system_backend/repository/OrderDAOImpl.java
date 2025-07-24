@@ -70,4 +70,9 @@ public class OrderDAOImpl implements OrderDAO{
 		return entityManager.merge(order);
 	}
 
+	@Override
+	public void deleteOrderItem(OrderItem orderItem) {
+		entityManager.remove(orderItem);
+	}
+
 }

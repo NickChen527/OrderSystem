@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nick.order_system_backend.entity.Menu;
+import com.nick.order_system_backend.entity.OrderItem;
 import com.nick.order_system_backend.repository.MenuDAO;
+import com.nick.order_system_backend.repository.OrderDAO;
 
 import jakarta.transaction.Transactional;
 
@@ -14,10 +16,12 @@ import jakarta.transaction.Transactional;
 public class MenuServiceImpl implements MenuService {
 
 	private MenuDAO menuDAO;
+	private OrderDAO orderDAO;
 	
 	@Autowired
-	public MenuServiceImpl(MenuDAO menuDAO) {
+	public MenuServiceImpl(MenuDAO menuDAO, OrderDAO orderDAO) {
 		this.menuDAO = menuDAO;
+		this.orderDAO = orderDAO;
 	}
 	
 	@Override
@@ -34,6 +38,13 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	@Transactional
 	public void deleteByMenuId(long id) {
+		//找到所有相關的訂單明細
+		List<OrderItem> orderItems = menuDAO.findOrderItemsByMenuId(id);
+		//刪除他們
+		for(OrderItem orderItem:orderItems) {
+			orderDAO.deleteOrderItem(orderItem);
+		}
+		//刪除菜單品項
 		menuDAO.deleteById(id);
 	}
 

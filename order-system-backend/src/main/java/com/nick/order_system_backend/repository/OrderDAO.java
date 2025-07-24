@@ -21,4 +21,6 @@ public interface OrderDAO {
 	Order confirmOrder(long orderId);
 	//取消訂單
 	Order cancelOrder(long orderId);
+	//刪除訂單明細
+	void deleteOrderItem(OrderItem orderItem);
 }

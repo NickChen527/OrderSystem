@@ -34,6 +34,13 @@ public class MenuController {
 		this.objectMapper = objectMapper;
 	}
 	
+	//查單筆菜單
+	@GetMapping("/menus/{menuId}")
+	public Menu getMenuById(@PathVariable long menuId) {
+		return menuService.findById(menuId);
+	}
+	
+	
 	//顯示全部菜單
 	@GetMapping("/menus")
 	public List<Menu> getMenu(){
@@ -62,8 +69,15 @@ public class MenuController {
 	
 	//透過 id 刪除菜單
 	@DeleteMapping("/menus/{menuId}")
-	public void deleteMenu(@PathVariable long menuId) {
-		menuService.deleteByMenuId(menuId);
+	public String deleteMenu(@PathVariable long menuId) {
+		String result = null;
+		try {
+			menuService.deleteByMenuId(menuId);
+			result = "{\"status\":\"done\"}";
+		} catch (Exception e) {
+			result = "{\"status\":\"fail\"}";
+		}
+		return result;
 	}
 	
 	

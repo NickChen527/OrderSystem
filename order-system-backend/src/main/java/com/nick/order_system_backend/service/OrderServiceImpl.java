@@ -1,10 +1,12 @@
 package com.nick.order_system_backend.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.nick.order_system_backend.dto.OrderListDTO;
 import com.nick.order_system_backend.dto.RequestItemDTO;
 import com.nick.order_system_backend.entity.Menu;
 import com.nick.order_system_backend.entity.Order;
@@ -51,5 +53,41 @@ public class OrderServiceImpl implements OrderService {
 		Order result = orderDAO.saveOrder(order);
 		//回傳訂單明細
 		return orderDAO.findByIdWithItems(result.getId());
+	}
+
+	@Override
+	public List<OrderListDTO> getOrders() {
+		//建立回傳用List
+		List<OrderListDTO> result = new ArrayList<OrderListDTO>();
+		//找全部訂單
+		List<Order> orderList = orderDAO.findAll();
+		//用迴圈塞資料
+		for(Order order : orderList) {
+			OrderListDTO dto = new OrderListDTO();
+			dto.setId(order.getId());
+			dto.setOrderStatus(order.getOrderStatus());
+			dto.setOrderTime(order.getOrderTime());
+			dto.setTotalAmount(order.getTotalAmount());
+			result.add(dto);
+		}
+		//回傳
+		return result;
+	}
+
+	@Override
+	@Transactional
+	public void changeStatus(Long orderId, String status) {
+		switch (status) {
+		case "CONFIRMED": {
+			orderDAO.confirmOrder(orderId);
+			break;
+		}
+		case "CANCELLED":{
+			orderDAO.cancelOrder(orderId);
+			break;
+		}
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + status);
+		}
 	}
 }

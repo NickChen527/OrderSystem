@@ -7,7 +7,7 @@
         <hr>
         <ul class="nav nav-pills mb-auto flex-column" role="tablist">
             <li class="nav-item" role="presentation">
-                <router-link to="/" class="nav-link" active-class="active">菜單</router-link>
+                <router-link to="/menu" class="nav-link" active-class="active">菜單</router-link>
             </li>
             <li class="nav-item" role="presentation">
                 <router-link to="/order" class="nav-link" active-class="active">訂單</router-link>
