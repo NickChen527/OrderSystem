@@ -1,9 +1,10 @@
 package com.nick.order_system_backend.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.nick.order_system_backend.dto.OrderListDTO;
@@ -54,24 +55,19 @@ public class OrderServiceImpl implements OrderService {
 		//回傳訂單明細
 		return orderDAO.findByIdWithItems(result.getId());
 	}
-
+	
 	@Override
-	public List<OrderListDTO> getOrders() {
-		//建立回傳用List
-		List<OrderListDTO> result = new ArrayList<OrderListDTO>();
-		//找全部訂單
-		List<Order> orderList = orderDAO.findAll();
-		//用迴圈塞資料
-		for(Order order : orderList) {
-			OrderListDTO dto = new OrderListDTO();
-			dto.setId(order.getId());
-			dto.setOrderStatus(order.getOrderStatus());
-			dto.setOrderTime(order.getOrderTime());
-			dto.setTotalAmount(order.getTotalAmount());
-			result.add(dto);
-		}
-		//回傳
-		return result;
+	public Page<OrderListDTO> getOrders(Pageable pageable) {
+		return orderDAO.findAll(pageable).map(order -> orderToOrderListDTO(order));
+	}
+	
+	private OrderListDTO orderToOrderListDTO(Order order) {
+		OrderListDTO dto = new OrderListDTO();
+		dto.setId(order.getId());
+		dto.setOrderStatus(order.getOrderStatus());
+		dto.setOrderTime(order.getOrderTime());
+		dto.setTotalAmount(order.getTotalAmount());
+		return dto;
 	}
 
 	@Override
@@ -90,4 +86,6 @@ public class OrderServiceImpl implements OrderService {
 			throw new IllegalArgumentException("Unexpected value: " + status);
 		}
 	}
+
+	
 }

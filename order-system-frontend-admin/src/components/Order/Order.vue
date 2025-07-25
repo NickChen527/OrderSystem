@@ -2,11 +2,23 @@
 import { ref,onMounted } from 'vue';
 import { getOrder,changeOrderStatus } from '@/service/orderService';
 const orderList = ref([]);
+//目前頁碼，因為後端的頁面是從0起算，所以這邊也要設為0，下面操作時需要做前置動作
+const currentPage = ref(0);
+//每頁要有多少資料
+const pageSize = 5;
+//總共有幾頁
+const totalPages = ref(1);
 
+onMounted(
+    getOrders
+);
 
-onMounted(async function(){
-    orderList.value = await getOrder();
-});
+//因為下面切換分頁時要用到，所以拆出來寫不直接寫在onMounted裡面
+async function getOrders(){
+    const pageData = await getOrder(currentPage.value,pageSize);
+    orderList.value = pageData.content;
+    totalPages.value = pageData.totalPages;
+}
 
 async function confirm(order){
     const data = {
@@ -57,6 +69,20 @@ async function cancel(order){
             </tr>
         </tbody>
     </table>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+        <li class="page-item" v-bind:class="{ disabled: currentPage === 0 }">
+            <button class="page-link" @click="currentPage--, getOrders()" v-bind:disabled="currentPage===0">上一頁</button>
+        </li>
+        <li class="page-item" v-for="page in totalPages" v-bind:class="{active:page-1===currentPage}">
+            <button class="page-link" @click="currentPage = page - 1; getOrders()">{{ page }}</button>
+        </li>
+        <li class="page-item" :class="{ disabled: currentPage === totalPages - 1 }">
+            <button class="page-link" @click="currentPage++, getOrders()" :disabled="currentPage === totalPages - 1">下一頁</button>
+        </li>
+        </ul>
+    </nav>
 </template>
 
 <style scoped>

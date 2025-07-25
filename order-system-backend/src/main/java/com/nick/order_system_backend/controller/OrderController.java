@@ -5,11 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nick.order_system_backend.dto.OrderListDTO;
@@ -54,8 +59,9 @@ public class OrderController {
 	
 	//取得所有訂單
 	@GetMapping("/orders")
-	public List<OrderListDTO> getOrders(){
-		return orderService.getOrders();
+	public Page<OrderListDTO> getOrdersByPage(@RequestParam int page,@RequestParam int size){
+		Pageable pageable = PageRequest.of(page, size, Sort.by("orderTime").ascending());
+		return orderService.getOrders(pageable);
 	}
 	
 	//更新訂單狀態

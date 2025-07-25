@@ -1,6 +1,7 @@
 package com.nick.order_system_backend.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.nick.order_system_backend.entity.Order;
 import com.nick.order_system_backend.entity.OrderItem;
@@ -13,8 +14,8 @@ public interface OrderDAO {
 	Order findById(long id);
 	//查看單筆訂單+明細
 	Order findByIdWithItems(long id);
-	//查看所有訂單
-	List<Order> findAll();
+	//查看分頁內的所有訂單
+	Page<Order> findAll(Pageable pageable);
 	//找特定的訂單明細
 	OrderItem findOderItem(long orderId, long menuId);
 	//確認訂單

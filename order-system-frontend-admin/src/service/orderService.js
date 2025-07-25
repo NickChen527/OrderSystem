@@ -1,8 +1,8 @@
 const BASE_URL = 'http://localhost:8080/api';
 
-//取得所有訂單
-export async function getOrder() {
-    const result = await fetch(`${BASE_URL}/orders`, {
+//取得分頁訂單
+export async function getOrder(page = 0, size = 5) {
+    const result = await fetch(`${BASE_URL}/orders?page=${page}&size=${size}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" }
     });

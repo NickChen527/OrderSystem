@@ -3,6 +3,9 @@ package com.nick.order_system_backend.repository;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.nick.order_system_backend.entity.Order;
@@ -28,10 +31,19 @@ public class OrderDAOImpl implements OrderDAO{
 	}
 
 	@Override
-	public List<Order> findAll() {
+	public Page<Order> findAll(Pageable pageable) {
 		String hql = "SELECT o FROM Order o";
 		TypedQuery<Order> query = entityManager.createQuery(hql, Order.class);
-		return query.getResultList();
+		//設定第一筆從哪裡開始
+		query.setFirstResult((int)pageable.getOffset());
+		//設定總共要查幾筆
+		query.setMaxResults(pageable.getPageSize());
+		List<Order> orders = query.getResultList();
+		//因為要支援Page的回傳型別，所以需要總共幾筆的資料
+	    String countHql = "SELECT COUNT(o) FROM Order o";
+	    Long count = entityManager.createQuery(countHql, Long.class).getSingleResult();
+
+	    return new PageImpl<>(orders, pageable, count);
 	}
 
 	@Override
