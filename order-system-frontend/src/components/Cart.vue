@@ -1,9 +1,11 @@
 <script setup>
-import { useCartStore } from '@/stores/cartStore';
+import { useCartStore,useOrderStore } from '@/stores/cartStore';
 import { computed } from 'vue';
 import { submitOrderApi } from '@/services/orderService';
+import { useRouter } from 'vue-router';
 
 const cartStore = useCartStore();
+const orderStore = useOrderStore();
 const total = computed(()=>{
     let sum = 0;
     for(const item of cartStore.cart){
@@ -11,6 +13,7 @@ const total = computed(()=>{
     }
     return sum;
 })
+const router = useRouter();
 
 async function submitOrder() {
   //包裝成物件，需要餐點ID、數量
@@ -19,8 +22,11 @@ async function submitOrder() {
   let response =  await submitOrderApi(orderRequest);
   //呼叫成功清空購物車
   if(response){
-    console.log('訂單已送出');
-    cartStore.cart.value = [];
+    orderStore.orders.push(response);
+    //把訂單的資料存到session裡面
+    sessionStorage.setItem('orders',JSON.stringify(orderStore.orders));
+    cartStore.cart = [];
+    router.push({name:'Order'});
   }
 }
 </script>

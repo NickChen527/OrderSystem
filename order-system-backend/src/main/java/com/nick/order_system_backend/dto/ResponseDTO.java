@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ResponseDTO {
 
+	private Long orderId;
 	private List<ResponseItemDTO> items; 
 	private Double total;
 	
@@ -18,5 +19,11 @@ public class ResponseDTO {
 	}
 	public void setTotal(Double total) {
 		this.total = total;
+	}
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 }

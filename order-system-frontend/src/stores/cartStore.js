@@ -22,3 +22,10 @@ export const useCartStore = defineStore(
         }
     }
 )
+
+export const useOrderStore = defineStore(
+    'order', function () {
+        const orders = ref([]);
+        return { orders }
+    }
+);

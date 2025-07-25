@@ -53,6 +53,7 @@ public class OrderController {
 		}
 		response.setItems(temp);
 		response.setTotal(order.getTotalAmount());
+		response.setOrderId(order.getId());
 		//回傳
 		return response;
 	}
