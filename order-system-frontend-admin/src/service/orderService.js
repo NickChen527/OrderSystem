@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'https://ordersystem-8dln.onrender.com/api';
 
 //取得分頁訂單
 export async function getOrder(page = 0, size = 5) {
