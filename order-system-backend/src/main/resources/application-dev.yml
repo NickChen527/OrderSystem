@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;DatabaseName=order_system;encrypt=false
+    username: sa
+    password: "@Nick0527"
+  flyway:
+    enabled: false
+app:
+  frontend-url: "http://localhost:5173/,http://localhost:5174/"
