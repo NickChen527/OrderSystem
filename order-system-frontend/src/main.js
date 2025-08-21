@@ -6,6 +6,10 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 //加入router
 import { router } from './router';
+// CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+// JS（一定要這行，否則漢堡按鈕不會有作用）
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 //建立Pinia
 const pinia = createPinia();
 //建立 Vue App 物件
